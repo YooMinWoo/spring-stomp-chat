@@ -1,6 +1,6 @@
 package com.example.spring_stomp_chat.global.security;
 
-import com.example.spring_stomp_chat.domain.user.model.User;
+import com.example.spring_stomp_chat.user.domain.model.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

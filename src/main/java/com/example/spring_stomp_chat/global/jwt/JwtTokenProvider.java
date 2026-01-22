@@ -1,6 +1,6 @@
 package com.example.spring_stomp_chat.global.jwt;
 
-import com.example.spring_stomp_chat.domain.user.model.User;
+import com.example.spring_stomp_chat.user.domain.model.User;
 import com.example.spring_stomp_chat.global.redis.RedisService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
