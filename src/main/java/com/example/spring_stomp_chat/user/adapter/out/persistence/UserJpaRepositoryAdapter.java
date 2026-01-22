@@ -1,10 +1,10 @@
-package com.example.spring_stomp_chat.user.adapter.out;
+package com.example.spring_stomp_chat.user.adapter.out.persistence;
 
 import com.example.spring_stomp_chat.user.adapter.out.persistence.UserJpaEntity;
 import com.example.spring_stomp_chat.user.adapter.out.persistence.UserJpaRepository;
 import com.example.spring_stomp_chat.user.domain.model.User;
-import com.example.spring_stomp_chat.user.domain.port.out.LoadUserPort;
-import com.example.spring_stomp_chat.user.domain.port.out.SaveUserPort;
+import com.example.spring_stomp_chat.user.application.port.out.LoadUserPort;
+import com.example.spring_stomp_chat.user.application.port.out.SaveUserPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

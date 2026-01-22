@@ -1,4 +1,4 @@
-package com.example.spring_stomp_chat.user.domain.command;
+package com.example.spring_stomp_chat.user.application.command;
 
 public record LoginUserCommand(
         String username,

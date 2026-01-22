@@ -3,12 +3,12 @@ package com.example.spring_stomp_chat.application.user.service;
 
 import com.example.spring_stomp_chat.user.adapter.in.response.TokenResponse;
 import com.example.spring_stomp_chat.user.application.service.UserService;
-import com.example.spring_stomp_chat.user.domain.command.CreateUserCommand;
-import com.example.spring_stomp_chat.user.domain.command.LoginUserCommand;
+import com.example.spring_stomp_chat.user.application.command.CreateUserCommand;
+import com.example.spring_stomp_chat.user.application.command.LoginUserCommand;
 import com.example.spring_stomp_chat.user.domain.model.User;
 import com.example.spring_stomp_chat.user.domain.model.UserRole;
-import com.example.spring_stomp_chat.user.domain.port.out.LoadUserPort;
-import com.example.spring_stomp_chat.user.domain.port.out.SaveUserPort;
+import com.example.spring_stomp_chat.user.application.port.out.LoadUserPort;
+import com.example.spring_stomp_chat.user.application.port.out.SaveUserPort;
 import com.example.spring_stomp_chat.global.jwt.JwtTokenDto;
 import com.example.spring_stomp_chat.global.jwt.JwtTokenProvider;
 import com.example.spring_stomp_chat.global.redis.RedisService;

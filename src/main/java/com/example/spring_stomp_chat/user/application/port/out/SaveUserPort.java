@@ -1,4 +1,4 @@
-package com.example.spring_stomp_chat.user.domain.port.out;
+package com.example.spring_stomp_chat.user.application.port.out;
 
 import com.example.spring_stomp_chat.user.domain.model.User;
 

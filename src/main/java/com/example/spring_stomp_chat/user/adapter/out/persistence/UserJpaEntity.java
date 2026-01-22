@@ -1,5 +1,6 @@
 package com.example.spring_stomp_chat.user.adapter.out.persistence;
 
+import com.example.spring_stomp_chat.global.BaseTimeEntity;
 import com.example.spring_stomp_chat.user.domain.model.User;
 import com.example.spring_stomp_chat.user.domain.model.UserRole;
 import jakarta.persistence.*;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // 외부 생성 방지
-public class UserJpaEntity {
+public class UserJpaEntity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

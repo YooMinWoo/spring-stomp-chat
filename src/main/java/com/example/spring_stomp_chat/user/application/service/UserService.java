@@ -1,16 +1,16 @@
 package com.example.spring_stomp_chat.user.application.service;
 
 import com.example.spring_stomp_chat.user.adapter.in.response.TokenResponse;
-import com.example.spring_stomp_chat.user.domain.command.CreateUserCommand;
-import com.example.spring_stomp_chat.user.domain.command.LoginUserCommand;
+import com.example.spring_stomp_chat.user.application.command.CreateUserCommand;
+import com.example.spring_stomp_chat.user.application.command.LoginUserCommand;
 import com.example.spring_stomp_chat.user.domain.model.User;
 import com.example.spring_stomp_chat.user.domain.model.UserRole;
-import com.example.spring_stomp_chat.user.domain.port.in.CreateUserUseCase;
-import com.example.spring_stomp_chat.user.domain.port.in.LoginUserUseCase;
-import com.example.spring_stomp_chat.user.domain.port.in.LogoutUserUseCase;
-import com.example.spring_stomp_chat.user.domain.port.in.ReissueUseCase;
-import com.example.spring_stomp_chat.user.domain.port.out.LoadUserPort;
-import com.example.spring_stomp_chat.user.domain.port.out.SaveUserPort;
+import com.example.spring_stomp_chat.user.application.port.in.CreateUserUseCase;
+import com.example.spring_stomp_chat.user.application.port.in.LoginUserUseCase;
+import com.example.spring_stomp_chat.user.application.port.in.LogoutUserUseCase;
+import com.example.spring_stomp_chat.user.application.port.in.ReissueUseCase;
+import com.example.spring_stomp_chat.user.application.port.out.LoadUserPort;
+import com.example.spring_stomp_chat.user.application.port.out.SaveUserPort;
 import com.example.spring_stomp_chat.global.jwt.JwtTokenDto;
 import com.example.spring_stomp_chat.global.jwt.JwtTokenProvider;
 import com.example.spring_stomp_chat.global.redis.RedisService;

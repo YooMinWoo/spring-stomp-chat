@@ -1,6 +1,6 @@
 package com.example.spring_stomp_chat.global.security;
 
-import com.example.spring_stomp_chat.user.domain.port.out.LoadUserPort;
+import com.example.spring_stomp_chat.user.application.port.out.LoadUserPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
