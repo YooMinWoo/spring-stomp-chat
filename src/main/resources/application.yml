@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/stomp?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: localhost
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html    # Swagger UI 접속 경로
+    groups-order: DESC
+  api-docs:
+    path: /v3/api-docs        # OpenAPI 데이터(JSON) 경로
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+
+server:
+  port: 9090
