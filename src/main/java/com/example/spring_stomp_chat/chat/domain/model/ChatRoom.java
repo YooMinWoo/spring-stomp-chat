@@ -6,16 +6,25 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class ChatRoom {
     private Long id;
     private LocalDateTime lastMessageAt;
     private Boolean isActive;
 
-    private LocalDateTime createdTime;
-    private LocalDateTime modifiedTime;
+    private List<ChatRoomParticipant> participants = new ArrayList<>();
+
+    public static ChatRoom create(Long requestUserId, Long targetUserId){
+        ChatRoom chatRoom = new ChatRoom();
+        chatRoom.isActive = true;
+        chatRoom.lastMessageAt = null;
+        chatRoom.getParticipants().add(ChatRoomParticipant.create(requestUserId));
+        chatRoom.getParticipants().add(ChatRoomParticipant.create(targetUserId));
+        return chatRoom;
+    }
 }

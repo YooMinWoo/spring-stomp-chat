@@ -1,5 +1,9 @@
 package com.example.spring_stomp_chat.chat.application.port.in;
 
-public interface EnterChatRoomUseCase {
+import com.example.spring_stomp_chat.chat.adapter.in.response.ChatRoomsResponse;
+import com.example.spring_stomp_chat.chat.application.command.EnterChatByUserCommand;
 
+public interface EnterChatRoomUseCase {
+    void enterByTargetUser(EnterChatByUserCommand command);
+//    void openByRoomId(OpenChatByRoomIdQuery query);
 }

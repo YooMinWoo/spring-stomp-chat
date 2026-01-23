@@ -1,5 +1,7 @@
 package com.example.spring_stomp_chat.chat.adapter.out.persistence;
 
+import com.example.spring_stomp_chat.chat.domain.model.ChatRoom;
+import com.example.spring_stomp_chat.chat.domain.model.ChatRoomParticipant;
 import com.example.spring_stomp_chat.global.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;

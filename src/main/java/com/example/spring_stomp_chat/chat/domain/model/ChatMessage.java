@@ -21,6 +21,4 @@ public class ChatMessage {
     private Long senderId;
     private String content;
 
-    private LocalDateTime createdTime;
-    private LocalDateTime modifiedTime;
 }
