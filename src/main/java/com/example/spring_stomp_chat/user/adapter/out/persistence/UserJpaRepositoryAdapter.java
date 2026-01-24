@@ -8,6 +8,8 @@ import com.example.spring_stomp_chat.user.application.port.out.SaveUserPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Repository
 public class UserJpaRepositoryAdapter implements LoadUserPort, SaveUserPort {
@@ -36,5 +38,12 @@ public class UserJpaRepositoryAdapter implements LoadUserPort, SaveUserPort {
     @Override
     public boolean existsByUsername(String username) {
         return userJpaRepository.existsByUsername(username);
+    }
+
+    @Override
+    public List<User> loadUsersByIds(List<Long> targetUserIds) {
+        return userJpaRepository.findAllById(targetUserIds).stream()
+                .map(UserJpaEntity::toDomain)
+                .toList();
     }
 }

@@ -32,8 +32,7 @@ public class ChatRoomParticipantJpaEntity extends BaseTimeEntity {
 
     // 현재 참여 상태 (나갔으면 false)
     @Column(name = "is_active", nullable = false)
-    @Builder.Default
-    private Boolean isActive = true;
+    private Boolean isActive;
 
     // 나갔다가 다시 들어올 때를 위한 현재 참여 시작 시간
     @Column(name = "current_joined_at")

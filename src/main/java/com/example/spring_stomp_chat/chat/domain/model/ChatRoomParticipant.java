@@ -24,7 +24,7 @@ public class ChatRoomParticipant {
         ChatRoomParticipant chatRoomParticipant = new ChatRoomParticipant();
         chatRoomParticipant.participantId = participantId;
         chatRoomParticipant.lastReadAt = null;
-        chatRoomParticipant.isActive = true;
+        chatRoomParticipant.isActive = false;
         chatRoomParticipant.currentJoinedAt = null;
         chatRoomParticipant.leftAt = null;
 
