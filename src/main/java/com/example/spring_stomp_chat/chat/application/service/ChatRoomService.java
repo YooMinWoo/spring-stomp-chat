@@ -2,16 +2,23 @@ package com.example.spring_stomp_chat.chat.application.service;
 
 import com.example.spring_stomp_chat.chat.adapter.in.response.ChatRoomResponse;
 import com.example.spring_stomp_chat.chat.application.command.EnterChatByUserCommand;
+import com.example.spring_stomp_chat.chat.application.command.SendMessageCommand;
 import com.example.spring_stomp_chat.chat.application.dto.LoadChatRoom;
 import com.example.spring_stomp_chat.chat.application.port.in.EnterChatRoomUseCase;
 import com.example.spring_stomp_chat.chat.application.port.in.GetMyChatRoomsUseCase;
+import com.example.spring_stomp_chat.chat.application.port.in.SendMessageUseCase;
+import com.example.spring_stomp_chat.chat.application.port.out.CreateChatMessagePort;
 import com.example.spring_stomp_chat.chat.application.port.out.CreateChatRoomPort;
 import com.example.spring_stomp_chat.chat.application.port.out.LoadChatRoomPort;
+import com.example.spring_stomp_chat.chat.application.port.out.UpdateChatRoomPort;
+import com.example.spring_stomp_chat.chat.domain.model.ChatMessage;
 import com.example.spring_stomp_chat.chat.domain.model.ChatRoom;
+import com.example.spring_stomp_chat.chat.domain.service.ChatMessageProcessor;
 import com.example.spring_stomp_chat.user.application.port.out.LoadUserPort;
 import com.example.spring_stomp_chat.user.domain.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,11 +27,15 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class ChatRoomService implements EnterChatRoomUseCase, GetMyChatRoomsUseCase {
+public class ChatRoomService implements EnterChatRoomUseCase, GetMyChatRoomsUseCase, SendMessageUseCase {
 
     private final LoadUserPort loadUserPort;
     private final LoadChatRoomPort loadChatRoomPort;
+    private final UpdateChatRoomPort updateChatRoomPort;
     private final CreateChatRoomPort createChatRoomPort;
+    private final CreateChatMessagePort createChatMessagePort;
+
+    private final ChatMessageProcessor chatMessageProcessor;
 
     @Override
     public void enterByTargetUser(EnterChatByUserCommand command) {
@@ -70,5 +81,15 @@ public class ChatRoomService implements EnterChatRoomUseCase, GetMyChatRoomsUseC
             ));
         }
         return responses;
+    }
+
+    @Override
+    @Transactional
+    public void sendMessage(SendMessageCommand command) {
+        ChatRoom chatRoom = loadChatRoomPort.loadChatRoomById(command.chatRoomId());
+        chatMessageProcessor.processMessageDelivery(chatRoom, chatRoom.getParticipants(), command.senderId());
+        ChatMessage chatMessage = ChatMessage.create(chatRoom, command.senderId(), command.content());
+        createChatMessagePort.save(chatMessage);
+        updateChatRoomPort.update(chatRoom);
     }
 }

@@ -12,6 +12,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ChatRoom {
     private Long id;
     private LocalDateTime lastMessageAt;
@@ -26,5 +27,10 @@ public class ChatRoom {
         chatRoom.getParticipants().add(ChatRoomParticipant.create(requestUserId));
         chatRoom.getParticipants().add(ChatRoomParticipant.create(targetUserId));
         return chatRoom;
+    }
+
+    public void processNewMessage() {
+        this.isActive = true;
+        this.lastMessageAt = LocalDateTime.now();
     }
 }

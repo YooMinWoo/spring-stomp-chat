@@ -10,4 +10,6 @@ public interface LoadChatRoomPort {
     ChatRoom loadChatRoomByTargetUser(Long requestUserId, Long targetUserId);
 
     List<LoadChatRoom> loadChatRooms(Long userId);
+
+    ChatRoom loadChatRoomById(Long chatRoomId);
 }

@@ -1,5 +1,6 @@
 package com.example.spring_stomp_chat.chat.domain.model;
 
+import com.example.spring_stomp_chat.chat.application.command.SendMessageCommand;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,8 +18,15 @@ import java.time.LocalDateTime;
 @Builder
 public class ChatMessage {
     private Long id;
-    private Long chatRoomId;
+    private ChatRoom chatRoom;
     private Long senderId;
     private String content;
 
+    public static ChatMessage create(ChatRoom chatRoom, Long senderId, String content){
+        return ChatMessage.builder()
+                .chatRoom(chatRoom)
+                .senderId(senderId)
+                .content(content)
+                .build();
+    }
 }

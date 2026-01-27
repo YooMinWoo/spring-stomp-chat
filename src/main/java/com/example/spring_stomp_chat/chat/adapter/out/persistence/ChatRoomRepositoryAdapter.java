@@ -5,6 +5,7 @@ import com.example.spring_stomp_chat.chat.adapter.mapper.ChatRoomMapper;
 import com.example.spring_stomp_chat.chat.application.dto.LoadChatRoom;
 import com.example.spring_stomp_chat.chat.application.port.out.CreateChatRoomPort;
 import com.example.spring_stomp_chat.chat.application.port.out.LoadChatRoomPort;
+import com.example.spring_stomp_chat.chat.application.port.out.UpdateChatRoomPort;
 import com.example.spring_stomp_chat.chat.domain.model.ChatRoom;
 import com.example.spring_stomp_chat.chat.domain.model.ChatRoomParticipant;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
-public class ChatRoomRepositoryAdapter implements CreateChatRoomPort, LoadChatRoomPort {
+public class ChatRoomRepositoryAdapter implements CreateChatRoomPort, LoadChatRoomPort, UpdateChatRoomPort {
 
     private final ChatRoomJpaRepository chatRoomJpaRepository;
     private final ChatRoomParticipantJpaRepository chatRoomParticipantJpaRepository;
@@ -73,5 +74,20 @@ public class ChatRoomRepositoryAdapter implements CreateChatRoomPort, LoadChatRo
         }
 
         return responses;
+    }
+
+    @Override
+    public ChatRoom loadChatRoomById(Long chatRoomId) {
+        ChatRoomJpaEntity chatRoomJpaEntity = chatRoomJpaRepository.findById(chatRoomId)
+                .orElseThrow(() -> new RuntimeException("없는 채팅방입니다"));
+
+        List<ChatRoomParticipantJpaEntity> participantEntities =
+                chatRoomParticipantJpaRepository.findByChatRoomId(chatRoomId);
+        return ChatRoomMapper.toDomain(chatRoomJpaEntity, participantEntities);
+    }
+
+    @Override
+    public void update(ChatRoom chatRoom) {
+        chatRoomJpaRepository.save(ChatRoomMapper.toEntity(chatRoom));
     }
 }

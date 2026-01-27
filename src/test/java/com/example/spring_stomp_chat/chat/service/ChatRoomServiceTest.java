@@ -3,11 +3,16 @@ package com.example.spring_stomp_chat.chat.service;
 
 import com.example.spring_stomp_chat.chat.adapter.in.response.ChatRoomResponse;
 import com.example.spring_stomp_chat.chat.application.command.EnterChatByUserCommand;
+import com.example.spring_stomp_chat.chat.application.command.SendMessageCommand;
 import com.example.spring_stomp_chat.chat.application.dto.LoadChatRoom;
+import com.example.spring_stomp_chat.chat.application.port.out.CreateChatMessagePort;
 import com.example.spring_stomp_chat.chat.application.port.out.CreateChatRoomPort;
 import com.example.spring_stomp_chat.chat.application.port.out.LoadChatRoomPort;
+import com.example.spring_stomp_chat.chat.application.port.out.UpdateChatRoomPort;
 import com.example.spring_stomp_chat.chat.application.service.ChatRoomService;
+import com.example.spring_stomp_chat.chat.domain.model.ChatMessage;
 import com.example.spring_stomp_chat.chat.domain.model.ChatRoom;
+import com.example.spring_stomp_chat.chat.domain.service.ChatMessageProcessor;
 import com.example.spring_stomp_chat.user.application.port.out.LoadUserPort;
 import com.example.spring_stomp_chat.user.domain.model.User;
 import com.example.spring_stomp_chat.user.domain.model.UserRole;
@@ -20,6 +25,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,6 +47,9 @@ public class ChatRoomServiceTest {
 
     @Mock
     private CreateChatRoomPort createChatRoomPort;
+    @Mock private ChatMessageProcessor chatMessageProcessor;
+    @Mock private CreateChatMessagePort createChatMessagePort;
+    @Mock private UpdateChatRoomPort updateChatRoomPort;
 
     //
     @Nested
@@ -143,4 +152,28 @@ public class ChatRoomServiceTest {
         }
     }
 
+    @Test
+    @DisplayName("메시지 전송 시 도메인 로직이 수행되고 상태가 저장되어야 한다")
+    void sendMessage_success() {
+        // given
+        Long roomId = 1L;
+        Long senderId = 100L;
+        SendMessageCommand command = new SendMessageCommand(roomId, senderId, "안녕하세요");
+
+        ChatRoom mockChatRoom = ChatRoom.builder().id(roomId).participants(new ArrayList<>()).build();
+        given(loadChatRoomPort.loadChatRoomById(roomId)).willReturn(mockChatRoom);
+
+        // when
+        chatRoomService.sendMessage(command);
+
+        // then
+        // 1. 도메인 프로세서가 호출되었는가? (비즈니스 로직 수행 확인)
+        verify(chatMessageProcessor).processMessageDelivery(eq(mockChatRoom), any(), eq(senderId));
+
+        // 2. 메시지가 생성되어 저장되었는가?
+        verify(createChatMessagePort).save(any(ChatMessage.class));
+
+        // 3. 변경된 채팅방 상태가 업데이트 되었는가? (명시적 update 호출 확인)
+        verify(updateChatRoomPort).update(mockChatRoom);
+    }
 }

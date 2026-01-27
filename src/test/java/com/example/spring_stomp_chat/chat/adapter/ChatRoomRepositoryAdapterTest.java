@@ -16,7 +16,7 @@ import java.util.List;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @DataJpaTest
-@Import({ChatRoomRepositoryAdapter.class})
+@Import({ChatRoomRepositoryAdapter.class, ChatRoomMapper.class})
 public class ChatRoomRepositoryAdapterTest {
 
     @Autowired
@@ -113,5 +113,41 @@ public class ChatRoomRepositoryAdapterTest {
 
         // then
         assertThat(result).isEmpty();
+    }
+
+    @Test
+    @DisplayName("도메인 객체를 저장하면 엔티티로 변환되어 DB에 반영되어야 한다")
+    void update_save_success() {
+        // given
+        ChatRoom chatRoom = ChatRoom.create(1L, 2L); // 도메인 객체 생성
+
+        // when
+        chatRoomRepositoryAdapter.update(chatRoom); // 이 안에서 Mapper와 save가 동작
+
+        // then
+        List<ChatRoomJpaEntity> rooms = chatRoomJpaRepository.findAll();
+        assertThat(rooms).hasSize(1);
+        assertThat(rooms.get(0).getIsActive()).isTrue();
+
+        // Cascade 설정에 의해 참여자도 함께 저장되었는지 확인
+        List<ChatRoomParticipantJpaEntity> participants = participantJpaRepository.findAll();
+        assertThat(participants).hasSize(2);
+    }
+
+    @Test
+    @DisplayName("ID로 조회 시 참여자 목록까지 포함된 도메인 객체를 반환해야 한다")
+    void loadChatRoomById_success() {
+        // given (먼저 DB에 데이터 세팅)
+        ChatRoomJpaEntity entity = ChatRoomJpaEntity.builder().isActive(true).build();
+        chatRoomJpaRepository.save(entity);
+
+        // when
+        ChatRoom domain = chatRoomRepositoryAdapter.loadChatRoomById(entity.getId());
+
+        // then
+        assertThat(domain.getId()).isEqualTo(entity.getId());
+        assertThat(domain.getIsActive()).isTrue();
+        // 별도 조회 쿼리가 잘 동작하여 participants가 채워졌는지 확인
+        assertThat(domain.getParticipants()).isNotNull();
     }
 }
